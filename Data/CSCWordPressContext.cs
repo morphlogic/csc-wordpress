@@ -14,6 +14,6 @@ namespace CSC.WordPress.Data
         {
         }
 
-        public DbSet<CSC.WordPress.Models.User> User { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

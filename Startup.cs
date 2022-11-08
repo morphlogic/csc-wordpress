@@ -30,8 +30,10 @@ namespace CSC.WordPress
 
             services.AddRazorPages();
 
-            services.AddDbContext<CSCWordPressContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CSCWordPressContext")));
+            services.AddDbContext<CSCWordPressContext>(options => {
+                string connectionString = Configuration.GetConnectionString("CSCWordPressContext");
+                options.UseSqlServer(connectionString);
+            });
 
             //using (var db = new CSCWordPressContext(new DbContextOptions<CSCWordPressContext>()))
             //{
