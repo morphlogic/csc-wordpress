@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using CSC.WordPress.Data;
 
 namespace CSC.WordPress
 {
@@ -27,6 +29,16 @@ namespace CSC.WordPress
             services.AddWordPress(options => { });
 
             services.AddRazorPages();
+
+            services.AddDbContext<CSCWordPressContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("CSCWordPressContext")));
+
+            //using (var db = new CSCWordPressContext(new DbContextOptions<CSCWordPressContext>()))
+            //{
+            //    db.User.Add(new Models.User { Id = 1, Description = "hi", Username = "Sam" });
+
+            //    db.SaveChanges();
+            //}
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,13 +46,15 @@ namespace CSC.WordPress
         {
             app.UseRouting();
 
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                //endpoints.MapControllers();
+                endpoints.MapControllers();
 
                 endpoints.MapGet("/hithere", async context =>
                 {
@@ -64,9 +78,7 @@ namespace CSC.WordPress
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            //app.UseRouting();
-
-            app.UseAuthorization();
+            //app.UseRouting();            
 
             //app.UseWordPress();
 
@@ -89,7 +101,7 @@ namespace CSC.WordPress
             //app.UseEndpoints(endpoints =>
             //{
             //    endpoints.MapRazorPages();
-            //});
+            //});            
         }
     }
 }
